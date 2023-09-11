@@ -1,0 +1,97 @@
+{
+  "name": "vscode-honeybadger",
+  "displayName": "Honeybadger errors",
+  "description": "This unofficial extension integrates Honeybadger into VS Code",
+  "version": "0.1.0",
+  "publisher": "Afinitos",
+  "engines": {
+    "vscode": "^1.60.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "vscode-honeybadger.refreshEntry",
+        "title": "Refresh"
+      }
+    ],
+    "views": {
+      "hb-explorer": [
+        {
+          "id": "hbProjects",
+          "name": "Projects",
+          "icon": "media/hbicon.svg",
+          "contextualTitle": "Projects"
+        },
+        {
+          "id": "vscode-honeybadger",
+          "name": "Errors",
+          "icon": "media/hbicon.svg",
+          "contextualTitle": "Errors"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "vscode-honeybadger.refreshEntry",
+          "when": "view == vscode-honeybadger",
+          "group": "navigation"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "hb-explorer",
+          "title": "Faults in Honeybadger",
+          "icon": "media/hbicon.svg"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Honeybadger Errors",
+      "properties": {
+        "honeybadger.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "API key."
+        },
+        "honeybadger.apiRootURL": {
+          "type": "string",
+          "default": "https://app.honeybadger.io",
+          "description": "API root URL."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.60.0",
+    "@types/glob": "^8.1.0",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "16.x",
+    "@typescript-eslint/eslint-plugin": "^5.59.1",
+    "@typescript-eslint/parser": "^5.59.1",
+    "eslint": "^8.39.0",
+    "glob": "^8.1.0",
+    "mocha": "^10.2.0",
+    "typescript": "^5.0.4",
+    "@vscode/test-electron": "^2.3.0"
+  },
+  "dependencies": {
+    "axios": "^1.4.0",
+    "moment": "^2.29.4"
+  }
+}
