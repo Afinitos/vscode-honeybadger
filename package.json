@@ -12,6 +12,9 @@
   ],
   "activationEvents": [],
   "main": "./out/extension.js",
+  "repository": {
+		"url": "https://github.com/Afinitos/vscode-honeybadger.git"
+	},
   "contributes": {
     "commands": [
       {
