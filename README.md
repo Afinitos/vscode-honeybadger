@@ -9,10 +9,11 @@
 Instructions for creating .vsix file: 
 
 1. Install vsce (Visual Studio Code Extensions) with: `npm install -g @vscode/vsce`
-2. Create .vsix file with: vsce package
+2. Create .vsix file with: `vsce package`
 
-Loading Extension into Visual Studio Code:
+# Installing VSIX file
 
--> From the Extensions menu, select "Install from VSIX..." (see attached img)
+1. Open Extensions menu
+2. select "Install from VSIX..." (see attached img)
 
 ![image](docs/vix-file-installation.png)
