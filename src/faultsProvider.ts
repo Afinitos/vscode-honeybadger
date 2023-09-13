@@ -97,7 +97,7 @@ export class FaultsProvider implements vscode.TreeDataProvider<Fault> {
 
   private createFault = (fault: HoneybadgerFault, project: Project): Fault => {
     const faultName = `${fault.klass} (${fault.notices_count_in_range} occurrences, ` +
-                      `first occurrence ${formatElapsedTimeFromDate(fault.created_at)})`;
+                      `first ${formatElapsedTimeFromDate(fault.created_at)})`;
     const faultMessage = 
       this.selectedProjects.length > 1
         ? `(${project.label}) / ${fault.message}`
