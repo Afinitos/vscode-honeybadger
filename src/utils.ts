@@ -1,6 +1,5 @@
 import * as moment from "moment";
 import * as vscode from "vscode";
-import { parseISO } from "date-fns";
 
 /**
  * Generates array with N dates in descending format starting with the current day.
@@ -18,7 +17,7 @@ export const getDates = (
 };
 
 export const formatElapsedTimeFromDate = (date: string) => {
-  const seconds = Math.round((new Date().valueOf() - parseISO(date).valueOf()) / 1000);
+  const seconds = Math.round((new Date().valueOf() - moment(date).valueOf()) / 1000);
 
   if(seconds < 60){
     return `${seconds} ${seconds > 1 ? "seconds ago" : "second ago"}`;
