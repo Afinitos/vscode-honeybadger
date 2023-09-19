@@ -7,11 +7,16 @@ import { getApiKey } from "./utils";
 import { Project } from "./project";
 
 let faultsProvider: FaultsProvider;
+let projectsProvider: ProjectsProvider;
 
 const onNewProjectSelected = (selectedProjects: Project[] | undefined) => {
   if (faultsProvider == null) return;
 
   faultsProvider.setProjects(selectedProjects);
+
+  if(projectsProvider == null) return;
+
+  projectsProvider.setProjects(selectedProjects);
 };
 
 // This method is called when your extension is activated
@@ -24,7 +29,7 @@ export const activate = (context: vscode.ExtensionContext) => {
   }
 
   faultsProvider = new FaultsProvider();
-  const projectsProvider = new ProjectsProvider(onNewProjectSelected);
+  projectsProvider = new ProjectsProvider(onNewProjectSelected);
 
   vscode.window.registerTreeDataProvider("hbProjects", projectsProvider);
   vscode.window.registerTreeDataProvider(
@@ -34,6 +39,10 @@ export const activate = (context: vscode.ExtensionContext) => {
 
   vscode.commands.registerCommand("vscode-honeybadger.refreshEntry", () =>
     faultsProvider.refresh()
+  );
+
+  vscode.commands.registerCommand("hbProjects.refreshEntry", () =>
+    projectsProvider.refresh()
   );
 };
 
