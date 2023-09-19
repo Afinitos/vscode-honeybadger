@@ -1,7 +1,7 @@
 import * as path from "path";
 import * as vscode from "vscode";
 import { Project, SelectedProjects } from "./project";
-import { getHoneybadgerProjects } from "./hb";
+import { getHoneybadgerProjects, getHoneybadgerSingleProject } from "./hb";
 
 export class ProjectsProvider implements vscode.TreeDataProvider<Project> {
   selectedProjectsIds: string[] = [];
@@ -68,7 +68,7 @@ export class ProjectsProvider implements vscode.TreeDataProvider<Project> {
   async getChildren(element?: Project): Promise<Project[]> {
     if (this.allProjects == null) {
       try {
-        const resp = await getHoneybadgerProjects();
+        /*const resp = await getHoneybadgerProjects();
         this.allProjects = [];
         resp.data.results.map((project: any) => {
           this.allProjects?.push(
@@ -78,7 +78,17 @@ export class ProjectsProvider implements vscode.TreeDataProvider<Project> {
               vscode.TreeItemCollapsibleState.None
             )
           );
-        });
+        });*/
+
+        const resp1 = await getHoneybadgerSingleProject();
+          this.allProjects ? (
+            new Project(
+              resp1.data.name,
+              resp1.data.id,
+              vscode.TreeItemCollapsibleState.None
+            )
+          ) : null;
+        
       } catch (error: any) {
         vscode.window.showErrorMessage(
           `Failed to fetch projects: ${error?.message}`
