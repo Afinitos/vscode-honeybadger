@@ -9,12 +9,6 @@ export const getHoneybadgerProjects = (): Promise<AxiosResponse<any, any>> => {
   return axios.get(url, getAuthHeader());
 };
 
-export const getHoneybadgerSingleProject = (): Promise<AxiosResponse<any, any>> => {
-  const settings = vscode.workspace.getConfiguration("honeybadger");
-  const url = settings.apiRootURL + `/v2/projects/1`;
-  return axios.get(url, getAuthHeader());
-}
-
 export const getHoneybadgerFaults = (projectId: string, occurredAfter: number, occurredBefore: number): Promise<AxiosResponse<any, any>> => {
   const settings = vscode.workspace.getConfiguration("honeybadger");
   const rootUrl = `${settings.apiRootURL}/v2/projects/${projectId}/faults`;

@@ -1,7 +1,7 @@
 import * as path from "path";
 import * as vscode from "vscode";
 import { Project, SelectedProjects } from "./project";
-import { getHoneybadgerProjects, getHoneybadgerSingleProject } from "./hb";
+import { getHoneybadgerProjects } from "./hb";
 
 export class ProjectsProvider implements vscode.TreeDataProvider<Project> {
   selectedProjectsIds: string[] = [];
@@ -24,6 +24,7 @@ export class ProjectsProvider implements vscode.TreeDataProvider<Project> {
     const projectIndex = this.selectedProjectsIds.findIndex(
       (id) => id === project.id
     );
+    
     if (projectIndex === -1) {
       result.iconPath = this.getUnCheckedProjectIcon();
     } else {
@@ -68,9 +69,9 @@ export class ProjectsProvider implements vscode.TreeDataProvider<Project> {
   async getChildren(element?: Project): Promise<Project[]> {
     if (this.allProjects == null) {
       try {
-        /*const resp = await getHoneybadgerProjects();
+        const resp = await getHoneybadgerProjects();
         this.allProjects = [];
-        resp.data.results.map((project: any) => {
+        /*resp.data.results.map((project: any) => {
           this.allProjects?.push(
             new Project(
               project.name,
@@ -78,16 +79,21 @@ export class ProjectsProvider implements vscode.TreeDataProvider<Project> {
               vscode.TreeItemCollapsibleState.None
             )
           );
+
         });*/
 
-        const resp1 = await getHoneybadgerSingleProject();
-          this.allProjects ? (
-            new Project(
-              resp1.data.name,
-              resp1.data.id,
-              vscode.TreeItemCollapsibleState.None
-            )
-          ) : null;
+        const project = resp.data.results[1];
+        this.allProjects?.push(
+          new Project(
+            project.name,
+            project.id,
+            vscode.TreeItemCollapsibleState.None
+          )
+        );
+        
+        this._onDidChangeTreeData.fire();
+        this.onNewProjectSelected([project]);
+        //this.onProjectClicked(project);
         
       } catch (error: any) {
         vscode.window.showErrorMessage(
