@@ -5,7 +5,6 @@ import { getHoneybadgerProjects } from "./hb";
 
 export class ProjectsProvider implements vscode.TreeDataProvider<Project> {
   selectedProjectsIds: string[] = [];
-  selectedProjects: Project[] = [];
   allProjects: Project[] | null = null;
 
   constructor(private onNewProjectSelected: SelectedProjects) {
@@ -102,14 +101,5 @@ export class ProjectsProvider implements vscode.TreeDataProvider<Project> {
 
   refresh(): void {
     this._onDidChangeTreeData.fire();
-  }
-
-  setProjects(projects: Project[] | undefined): void {
-    if (!projects) {
-      this.selectedProjects = [];
-    } else {
-      this.selectedProjects = projects;
-    }
-    this.refresh();
   }
 }

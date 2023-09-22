@@ -13,10 +13,6 @@ const onNewProjectSelected = (selectedProjects: Project[] | undefined) => {
   if (faultsProvider == null) return;
 
   faultsProvider.setProjects(selectedProjects);
-
-  if(projectsProvider == null) return;
-
-  projectsProvider.setProjects(selectedProjects);
 };
 
 // This method is called when your extension is activated
