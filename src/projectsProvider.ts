@@ -20,10 +20,13 @@ export class ProjectsProvider implements vscode.TreeDataProvider<Project> {
     let title = project.label ? project.label : "";
     let result = new vscode.TreeItem(title, project.collapsibleState);
     result.description = project.description;
-
+    
     const projectIndex = this.selectedProjectsIds.findIndex(
       (id) => id === project.id
     );
+
+    console.log(this.selectedProjectsIds)
+    console.log(this.allProjects);
     
     if (projectIndex === -1) {
       result.iconPath = this.getUnCheckedProjectIcon();
@@ -91,9 +94,10 @@ export class ProjectsProvider implements vscode.TreeDataProvider<Project> {
           )
         );
         
-        this._onDidChangeTreeData.fire();
+        //this._onDidChangeTreeData.fire();
         this.onNewProjectSelected([project]);
         //this.onProjectClicked(project);
+
         
       } catch (error: any) {
         vscode.window.showErrorMessage(
