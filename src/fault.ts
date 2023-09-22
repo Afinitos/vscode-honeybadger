@@ -7,7 +7,6 @@ export class Fault extends vscode.TreeItem {
     public readonly collapsibleState: vscode.TreeItemCollapsibleState,
     public readonly url: string | null,
     public readonly lastOccurredAt: number,
-    public readonly firstOccurredAt: string,
     public readonly noticesInRange: number
   ) {
     super(label, collapsibleState);

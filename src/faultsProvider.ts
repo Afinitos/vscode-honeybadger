@@ -87,7 +87,6 @@ export class FaultsProvider implements vscode.TreeDataProvider<Fault> {
               vscode.TreeItemCollapsibleState.Collapsed,
               null,
               0,
-              "",
               0
             )
         )
@@ -96,9 +95,7 @@ export class FaultsProvider implements vscode.TreeDataProvider<Fault> {
   }
 
   private createFault = (fault: HoneybadgerFault, project: Project): Fault => {
-    const errorOccurences = `${fault.notices_count_in_range} occurences`;
-    const relativeTime = `first ${formatElapsedTimeFromDate(fault.created_at)}`;
-    const faultName = `${fault.klass} (${errorOccurences} ${relativeTime})`;
+    const faultName = `${fault.klass} (${fault.notices_count_in_range})`;
     const faultMessage = 
       this.selectedProjects.length > 1
         ? `(${project.label}) / ${fault.message}`
@@ -109,7 +106,6 @@ export class FaultsProvider implements vscode.TreeDataProvider<Fault> {
       vscode.TreeItemCollapsibleState.None,
       fault.url,
       new Date(fault.last_notice_at).getTime(),
-      `${formatElapsedTimeFromDate(fault.created_at)}`,
       fault.notices_count_in_range
     );
   };
