@@ -24,9 +24,6 @@ export class ProjectsProvider implements vscode.TreeDataProvider<Project> {
     const projectIndex = this.selectedProjectsIds.findIndex(
       (id) => id === project.id
     );
-
-    console.log(this.selectedProjectsIds)
-    console.log(this.allProjects);
     
     if (projectIndex === -1) {
       result.iconPath = this.getUnCheckedProjectIcon();
