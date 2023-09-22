@@ -17,6 +17,11 @@
   },
   "contributes": {
     "commands": [
+      
+      {
+        "command": "hbProjects.refreshEntry",
+        "title": "Refresh"
+      },
       {
         "command": "vscode-honeybadger.refreshEntry",
         "title": "Refresh"
@@ -40,6 +45,11 @@
     },
     "menus": {
       "view/title": [
+        {
+          "command": "hbProjects.refreshEntry",
+          "when": "view == hbProjects",
+          "group": "navigation"
+        },
         {
           "command": "vscode-honeybadger.refreshEntry",
           "when": "view == vscode-honeybadger",
