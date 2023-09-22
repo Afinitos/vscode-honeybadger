@@ -108,13 +108,4 @@ export class ProjectsProvider implements vscode.TreeDataProvider<Project> {
   refresh(): void {
     this._onDidChangeTreeData.fire();
   }
-
-  setProjects(projects: Project[] | undefined): void {
-    if (!projects) {
-      this.selectedProjects = [];
-    } else {
-      this.selectedProjects = projects;
-    }
-    this.refresh();
-  }
 }
