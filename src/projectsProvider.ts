@@ -24,9 +24,6 @@ export class ProjectsProvider implements vscode.TreeDataProvider<Project> {
     const projectIndex = this.selectedProjectsIds.findIndex(
       (id) => id === project.id
     );
-
-    console.log(this.selectedProjectsIds)
-    console.log(this.allProjects);
     
     if (projectIndex === -1) {
       result.iconPath = this.getUnCheckedProjectIcon();
@@ -47,6 +44,7 @@ export class ProjectsProvider implements vscode.TreeDataProvider<Project> {
     const projectIndex = this.selectedProjectsIds.findIndex(
       (id) => id === projectId
     );
+
     if (projectIndex !== -1) {
       this.selectedProjectsIds.splice(projectIndex, 1);
     } else {
@@ -74,7 +72,7 @@ export class ProjectsProvider implements vscode.TreeDataProvider<Project> {
       try {
         const resp = await getHoneybadgerProjects();
         this.allProjects = [];
-        /*resp.data.results.map((project: any) => {
+        resp.data.results.map((project: any) => {
           this.allProjects?.push(
             new Project(
               project.name,
@@ -82,23 +80,14 @@ export class ProjectsProvider implements vscode.TreeDataProvider<Project> {
               vscode.TreeItemCollapsibleState.None
             )
           );
-
-        });*/
-
-        const project = resp.data.results[1];
-        this.allProjects?.push(
-          new Project(
-            project.name,
-            project.id,
-            vscode.TreeItemCollapsibleState.None
-          )
-        );
+        });
         
-        //this._onDidChangeTreeData.fire();
-        this.onNewProjectSelected([project]);
-        //this.onProjectClicked(project);
-
-        
+        if (this.allProjects.length === 1) {
+          this.onNewProjectSelected(
+            this.allProjects?.filter((project) =>
+            this.selectedProjectsIds.push(project.id)
+          ));
+        }
       } catch (error: any) {
         vscode.window.showErrorMessage(
           `Failed to fetch projects: ${error?.message}`
@@ -122,14 +111,5 @@ export class ProjectsProvider implements vscode.TreeDataProvider<Project> {
 
   refresh(): void {
     this._onDidChangeTreeData.fire();
-  }
-
-  setProjects(projects: Project[] | undefined): void {
-    if (!projects) {
-      this.selectedProjects = [];
-    } else {
-      this.selectedProjects = projects;
-    }
-    this.refresh();
   }
 }
