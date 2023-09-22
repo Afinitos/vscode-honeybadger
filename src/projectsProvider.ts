@@ -20,11 +20,9 @@ export class ProjectsProvider implements vscode.TreeDataProvider<Project> {
     let title = project.label ? project.label : "";
     let result = new vscode.TreeItem(title, project.collapsibleState);
     result.description = project.description;
-    
     const projectIndex = this.selectedProjectsIds.findIndex(
       (id) => id === project.id
     );
-    
     if (projectIndex === -1) {
       result.iconPath = this.getUnCheckedProjectIcon();
     } else {
@@ -44,7 +42,6 @@ export class ProjectsProvider implements vscode.TreeDataProvider<Project> {
     const projectIndex = this.selectedProjectsIds.findIndex(
       (id) => id === projectId
     );
-
     if (projectIndex !== -1) {
       this.selectedProjectsIds.splice(projectIndex, 1);
     } else {
@@ -82,12 +79,10 @@ export class ProjectsProvider implements vscode.TreeDataProvider<Project> {
           );
         });
         
-        if (this.allProjects.length === 1) {
-          this.onNewProjectSelected(
-            this.allProjects?.filter((project) =>
-            this.selectedProjectsIds.push(project.id)
-          ));
-        }
+        this.onNewProjectSelected(
+          this.allProjects?.filter((project) =>
+          this.selectedProjectsIds.push(project.id)
+        ));
       } catch (error: any) {
         vscode.window.showErrorMessage(
           `Failed to fetch projects: ${error?.message}`
