@@ -20,6 +20,7 @@ export class ProjectsProvider implements vscode.TreeDataProvider<Project> {
     let title = project.label ? project.label : "";
     let result = new vscode.TreeItem(title, project.collapsibleState);
     result.description = project.description;
+    
     const projectIndex = this.selectedProjectsIds.findIndex(
       (id) => id === project.id
     );
