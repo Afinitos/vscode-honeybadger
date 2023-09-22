@@ -74,7 +74,7 @@ export class ProjectsProvider implements vscode.TreeDataProvider<Project> {
       try {
         const resp = await getHoneybadgerProjects();
         this.allProjects = [];
-        /*resp.data.results.map((project: any) => {
+        resp.data.results.map((project: any) => {
           this.allProjects?.push(
             new Project(
               project.name,
@@ -83,22 +83,7 @@ export class ProjectsProvider implements vscode.TreeDataProvider<Project> {
             )
           );
 
-        });*/
-
-        const project = resp.data.results[1];
-        this.allProjects?.push(
-          new Project(
-            project.name,
-            project.id,
-            vscode.TreeItemCollapsibleState.None
-          )
-        );
-        
-        //this._onDidChangeTreeData.fire();
-        this.onNewProjectSelected([project]);
-        //this.onProjectClicked(project);
-
-        
+        });
       } catch (error: any) {
         vscode.window.showErrorMessage(
           `Failed to fetch projects: ${error?.message}`
