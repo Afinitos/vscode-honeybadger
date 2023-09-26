@@ -79,10 +79,13 @@ export class ProjectsProvider implements vscode.TreeDataProvider<Project> {
           );
         });
         
-        this.onNewProjectSelected(
-          this.allProjects?.filter((project) =>
-          this.selectedProjectsIds.push(project.id)
-        ));
+        if(this.allProjects.length === 1){
+          this.onNewProjectSelected(
+            this.allProjects?.filter((project) =>
+              this.selectedProjectsIds.push(project.id)
+          ));
+        }
+        
       } catch (error: any) {
         vscode.window.showErrorMessage(
           `Failed to fetch projects: ${error?.message}`
