@@ -5,7 +5,6 @@ import { getHoneybadgerProjects } from "./hb";
 
 export class ProjectsProvider implements vscode.TreeDataProvider<Project> {
   selectedProjectsIds: string[] = [];
-  selectedProjects: Project[] = [];
   allProjects: Project[] | null = null;
 
   constructor(private onNewProjectSelected: SelectedProjects) {
