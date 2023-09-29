@@ -17,3 +17,6 @@ Instructions for creating .vsix file:
 2. select "Install from VSIX..." (see attached img)
 
 ![image](docs/vix-file-installation.png)
+
+# How to add API URL & API key
+<video src="honeybadger-setup.mp4" controls title="Title"></video>
