@@ -87,6 +87,7 @@ export class FaultsProvider implements vscode.TreeDataProvider<Fault> {
               vscode.TreeItemCollapsibleState.Collapsed,
               null,
               0,
+              "",
               0
             )
         )
@@ -109,6 +110,7 @@ export class FaultsProvider implements vscode.TreeDataProvider<Fault> {
       vscode.TreeItemCollapsibleState.None,
       fault.url,
       new Date(fault.last_notice_at).getTime(),
+      `${formatElapsedTimeFromDate(fault.created_at)}`,
       fault.notices_count_in_range
     );
   };
