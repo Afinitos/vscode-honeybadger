@@ -17,3 +17,7 @@ Instructions for creating .vsix file:
 2. select "Install from VSIX..." (see attached img)
 
 ![image](docs/vix-file-installation.png)
+
+# How to add API URL & API key
+https://github.com/Afinitos/vscode-honeybadger/assets/83871614/3d93eb86-7106-474f-abb4-2382f0b7687c
+
