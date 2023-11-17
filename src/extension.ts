@@ -5,9 +5,11 @@ import { FaultsProvider } from "./faultsProvider";
 import { ProjectsProvider } from "./projectsProvider";
 import { getApiKey } from "./utils";
 import { Project } from "./project";
+import { HoneybadgerFaultsAndProjectsViewProvider } from "./honeybadgerFaultsAndProjectsViewProvider";
 
 let faultsProvider: FaultsProvider;
 let projectsProvider: ProjectsProvider;
+let honeybadgerFaultsAndProjectsViewProvider: HoneybadgerFaultsAndProjectsViewProvider;
 
 const onNewProjectSelected = (selectedProjects: Project[] | undefined) => {
   if (faultsProvider == null) return;
@@ -26,12 +28,20 @@ export const activate = (context: vscode.ExtensionContext) => {
 
   faultsProvider = new FaultsProvider();
   projectsProvider = new ProjectsProvider(onNewProjectSelected);
+  honeybadgerFaultsAndProjectsViewProvider =
+    new HoneybadgerFaultsAndProjectsViewProvider(context.extensionUri);
+
+  context.subscriptions.push(
+    vscode.window.registerWebviewViewProvider(
+      "hbProjects",
+      honeybadgerFaultsAndProjectsViewProvider
+    )
+  );
+
+  console.log(honeybadgerFaultsAndProjectsViewProvider);
 
   vscode.window.registerTreeDataProvider("hbProjects", projectsProvider);
-  vscode.window.registerTreeDataProvider(
-    "vscode-honeybadger",
-    faultsProvider
-  );
+  vscode.window.registerTreeDataProvider("vscode-honeybadger", faultsProvider);
 
   vscode.commands.registerCommand("vscode-honeybadger.refreshEntry", () =>
     faultsProvider.refresh()
