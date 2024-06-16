@@ -27,17 +27,20 @@ export const activate = (context: vscode.ExtensionContext) => {
   faultsProvider = new FaultsProvider();
   projectsProvider = new ProjectsProvider(onNewProjectSelected);
 
-  vscode.window.registerTreeDataProvider("hbProjects", projectsProvider);
   vscode.window.registerTreeDataProvider(
-    "vscode-honeybadger",
+    "vscode-honeybadger.projects",
+    projectsProvider
+  );
+  vscode.window.registerTreeDataProvider(
+    "vscode-honeybadger.faults",
     faultsProvider
   );
 
-  vscode.commands.registerCommand("vscode-honeybadger.refreshEntry", () =>
+  vscode.commands.registerCommand("vscode-honeybadger.refreshFaults", () =>
     faultsProvider.refresh()
   );
 
-  vscode.commands.registerCommand("hbProjects.refreshEntry", () =>
+  vscode.commands.registerCommand("vscode-honeybadger.refreshProjects", () =>
     projectsProvider.refresh()
   );
 };

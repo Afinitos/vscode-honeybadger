@@ -1,7 +1,6 @@
 import * as vscode from "vscode";
 import axios, { AxiosResponse } from "axios";
 import { getApiKey } from "./utils";
-import { Fault } from "./fault";
 
 export const getHoneybadgerProjects = (): Promise<AxiosResponse<any, any>> => {
   const settings = vscode.workspace.getConfiguration("honeybadger");
@@ -9,17 +8,23 @@ export const getHoneybadgerProjects = (): Promise<AxiosResponse<any, any>> => {
   return axios.get(url, getAuthHeader());
 };
 
-export const getHoneybadgerFaults = (projectId: string, occurredAfter: number, occurredBefore: number): Promise<AxiosResponse<any, any>> => {
+export const getHoneybadgerFaults = (
+  projectId: string,
+  occurredAfter: number,
+  occurredBefore: number
+): Promise<AxiosResponse<any, any>> => {
   const settings = vscode.workspace.getConfiguration("honeybadger");
   const rootUrl = `${settings.apiRootURL}/v2/projects/${projectId}/faults`;
   let url = `${rootUrl}?occurred_after=${occurredAfter}&occurred_before=${occurredBefore}`;
   return axios.get(url, getAuthHeader());
-}
+};
 
-export const getNextHoneybadgerFaults = (nextUrl: string): Promise<AxiosResponse<any, any>> => {
+export const getNextHoneybadgerFaults = (
+  nextUrl: string
+): Promise<AxiosResponse<any, any>> => {
   const settings = vscode.workspace.getConfiguration("honeybadger");
   return axios.get(`${settings.apiRootURL}${nextUrl}`, getAuthHeader());
-}
+};
 
 const getAuthHeader = () => {
   const apiKey = getApiKey();
@@ -29,7 +34,7 @@ const getAuthHeader = () => {
       password: "",
     },
   };
-}
+};
 
 export interface HoneybadgerFault {
   created_at: string;

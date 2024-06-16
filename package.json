@@ -1,8 +1,8 @@
 {
   "name": "vscode-honeybadger",
   "displayName": "Honeybadger errors",
-  "description": "This unofficial extension integrates Honeybadger into VS Code",
-  "version": "0.2.0",
+  "description": "Unofficial extension that integrates Honeybadger into VS Code",
+  "version": "0.2.1",
   "publisher": "Afinitos",
   "engines": {
     "vscode": "^1.60.0"
@@ -17,26 +17,25 @@
   },
   "contributes": {
     "commands": [
-      
       {
-        "command": "hbProjects.refreshEntry",
+        "command": "vscode-honeybadger.refreshProjects",
         "title": "Refresh"
       },
       {
-        "command": "vscode-honeybadger.refreshEntry",
+        "command": "vscode-honeybadger.refreshFaults",
         "title": "Refresh"
       }
     ],
     "views": {
       "hb-explorer": [
         {
-          "id": "hbProjects",
+          "id": "vscode-honeybadger.projects",
           "name": "Projects",
           "icon": "media/hbicon.svg",
           "contextualTitle": "Projects"
         },
         {
-          "id": "vscode-honeybadger",
+          "id": "vscode-honeybadger.faults",
           "name": "Errors",
           "icon": "media/hbicon.svg",
           "contextualTitle": "Errors"
@@ -46,13 +45,13 @@
     "menus": {
       "view/title": [
         {
-          "command": "hbProjects.refreshEntry",
-          "when": "view == hbProjects",
+          "command": "vscode-honeybadger.refreshProjects",
+          "when": "view == vscode-honeybadger.projects",
           "group": "navigation"
         },
         {
-          "command": "vscode-honeybadger.refreshEntry",
-          "when": "view == vscode-honeybadger",
+          "command": "vscode-honeybadger.refreshFaults",
+          "when": "view == vscode-honeybadger.faults",
           "group": "navigation"
         }
       ]

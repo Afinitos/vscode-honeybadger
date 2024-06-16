@@ -42,65 +42,58 @@ export class FaultsProvider implements vscode.TreeDataProvider<Fault> {
       return Promise.resolve([]);
     }
 
-    const shownDates = getDates(7);
+    const datesToDisplay = getDates(14);
 
-    if (element) {
-      // if children for selected day need to be displayed
-      const selectedDate = element.label;
-      const ix = shownDates.findIndex((date) => date === selectedDate);
+    if (!element) return this.generateFaultNodesForDays(datesToDisplay);
 
-      const startTimeStamp = moment(element.label).unix();
-      const endTimeStamp =
-        ix === 0 ? moment().unix() : moment(shownDates[ix - 1]).unix();
-      const faults: Fault[] = [];
+    // if children for selected day need to be displayed
+    const selectedDate = element.label;
+    const ix = datesToDisplay.findIndex((date) => date === selectedDate);
 
-      for (const project of this.selectedProjects) {
-        const resp = await getHoneybadgerFaults(
-          project.id,
-          startTimeStamp,
-          endTimeStamp
-        );
+    const startTimeStamp = moment(element.label).unix();
+    const endTimeStamp =
+      ix === 0 ? moment().unix() : moment(datesToDisplay[ix - 1]).unix();
+    const faults: Fault[] = [];
+
+    for (const project of this.selectedProjects) {
+      const resp = await getHoneybadgerFaults(
+        project.id,
+        startTimeStamp,
+        endTimeStamp
+      );
+      resp.data.results.map((fault: HoneybadgerFault) =>
+        faults.push(this.createFault(fault, project))
+      );
+
+      let nextUrl = resp.data.links.next;
+      while (nextUrl) {
+        const resp = await getNextHoneybadgerFaults(nextUrl);
         resp.data.results.map((fault: HoneybadgerFault) =>
           faults.push(this.createFault(fault, project))
         );
-
-        let nextUrl = resp.data.links.next;
-        while (nextUrl) {
-          const resp = await getNextHoneybadgerFaults(nextUrl);
-          resp.data.results.map((fault: HoneybadgerFault) =>
-            faults.push(this.createFault(fault, project))
-          );
-          nextUrl = resp.data.links.get;
-        }
+        nextUrl = resp.data.links.get;
       }
-      return Promise.resolve(
-        faults.sort((a, b) => b.noticesInRange - a.noticesInRange)
-      );
-    } else {
-      // if children for root need to be displayed, create child for each day
-      return Promise.resolve(
-        shownDates.map(
-          (date) =>
-            new Fault(
-              date,
-              "",
-              vscode.TreeItemCollapsibleState.Collapsed,
-              null,
-              0,
-              "",
-              0
-            )
-        )
-      );
     }
+    return Promise.resolve(
+      faults.sort((a, b) => b.noticesInRange - a.noticesInRange)
+    );
   }
 
+  private generateFaultNodesForDays = (dates: string[]) => {
+    return Promise.resolve(
+      dates.map(
+        (date) => new Fault(date, "", vscode.TreeItemCollapsibleState.Collapsed)
+      )
+    );
+  };
+
   private createFault = (fault: HoneybadgerFault, project: Project): Fault => {
-    const errorOccurences = `${fault.notices_count_in_range} `+
-                            `${fault.notices_count_in_range > 1 ? 'occurrences' : 'occurence'}`;
+    const errorOccurences =
+      `${fault.notices_count_in_range} ` +
+      `${fault.notices_count_in_range > 1 ? "occurrences" : "occurence"}`;
     const relativeTime = `first ${formatElapsedTimeFromDate(fault.created_at)}`;
     const faultName = `${fault.klass} (${errorOccurences} ${relativeTime})`;
-    const faultMessage = 
+    const faultMessage =
       this.selectedProjects.length > 1
         ? `(${project.label}) / ${fault.message}`
         : fault.message;

@@ -5,10 +5,10 @@ export class Fault extends vscode.TreeItem {
     public readonly label: string,
     private version: string,
     public readonly collapsibleState: vscode.TreeItemCollapsibleState,
-    public readonly url: string | null,
-    public readonly lastOccurredAt: number,
-    public readonly firstOccurredAt: string,
-    public readonly noticesInRange: number
+    public readonly url: string = "",
+    public readonly lastOccurredAt: number = 0,
+    public readonly firstOccurredAt: string = "",
+    public readonly noticesInRange: number = 0
   ) {
     super(label, collapsibleState);
     this.tooltip = `${this.label}-${this.version}`;
