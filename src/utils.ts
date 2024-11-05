@@ -10,7 +10,7 @@ import * as vscode from "vscode";
  */
 export const getDates = (
   n: number,
-  dateFormat: string = "YYYY-MM-DD"
+  dateFormat = "YYYY-MM-DD"
 ): string[] => {
   const days = Array.from(Array(n).keys());
   return days.map((day) => moment().subtract(day, "days").format(dateFormat));
@@ -19,15 +19,15 @@ export const getDates = (
 export const formatElapsedTimeFromDate = (date: string) => {
   const seconds = Math.round((new Date().valueOf() - moment(date).valueOf()) / 1000);
 
-  if(seconds < 60){
+  if (seconds < 60){
     return `${seconds} ${seconds > 1 ? "seconds ago" : "second ago"}`;
-  }else if(seconds < 60 * 60){
+  } else if (seconds < 60 * 60){
     const elapsedMinutes = Math.round(seconds / 60);
     return `${elapsedMinutes} ${elapsedMinutes > 1 ? "minutes ago" : "minute ago"}`;
-  }else if(seconds < 60 * 60 * 24){
+  } else if (seconds < 60 * 60 * 24){
     const hoursElapsed = Math.round(seconds / (60 * 60));
     return `${hoursElapsed} ${hoursElapsed > 1 ? "hours ago" : "hour ago"}`;
-  }else{
+  } else {
     const elapsedDays = Math.round(seconds / (60 * 60 *24));
     return `${elapsedDays} ${elapsedDays > 1 ? "days ago" : "day ago"}`;
   }

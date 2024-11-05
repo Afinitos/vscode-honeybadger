@@ -53,6 +53,7 @@ export class FaultsProvider implements vscode.TreeDataProvider<Fault> {
     const startTimeStamp = moment(element.label).unix();
     const endTimeStamp =
       ix === 0 ? moment().unix() : moment(datesToDisplay[ix - 1]).unix();
+
     const faults: Fault[] = [];
 
     for (const project of this.selectedProjects) {
@@ -74,6 +75,7 @@ export class FaultsProvider implements vscode.TreeDataProvider<Fault> {
         nextUrl = resp.data.links.get;
       }
     }
+    
     return Promise.resolve(
       faults.sort((a, b) => b.noticesInRange - a.noticesInRange)
     );
@@ -82,15 +84,14 @@ export class FaultsProvider implements vscode.TreeDataProvider<Fault> {
   private generateFaultNodesForDays = (dates: string[]) => {
     return Promise.resolve(
       dates.map(
-        (date) => new Fault(date, "", vscode.TreeItemCollapsibleState.Collapsed)
+        (date) => new Fault(date, vscode.TreeItemCollapsibleState.Collapsed)
       )
     );
   };
 
   private createFault = (fault: HoneybadgerFault, project: Project): Fault => {
-    const errorOccurences =
-      `${fault.notices_count_in_range} ` +
-      `${fault.notices_count_in_range > 1 ? "occurrences" : "occurence"}`;
+    const occurenceText = `${fault.notices_count_in_range > 1 ? "occurrences" : "occurence"}`;
+    const errorOccurences = `${fault.notices_count_in_range} ${occurenceText}`;
     const relativeTime = `first ${formatElapsedTimeFromDate(fault.created_at)}`;
     const faultName = `${fault.klass} (${errorOccurences} ${relativeTime})`;
     const faultMessage =
@@ -99,8 +100,8 @@ export class FaultsProvider implements vscode.TreeDataProvider<Fault> {
         : fault.message;
     return new Fault(
       faultName,
-      faultMessage,
       vscode.TreeItemCollapsibleState.None,
+      faultMessage,
       fault.url,
       new Date(fault.last_notice_at).getTime(),
       `${formatElapsedTimeFromDate(fault.created_at)}`,
@@ -123,11 +124,7 @@ export class FaultsProvider implements vscode.TreeDataProvider<Fault> {
   }
 
   setProjects(projects: Project[] | undefined): void {
-    if (!projects) {
-      this.selectedProjects = [];
-    } else {
-      this.selectedProjects = projects;
-    }
+    this.selectedProjects = projects || [];
     this.refresh();
   }
 }
